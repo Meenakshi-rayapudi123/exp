@@ -1,66 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+
     <style>
-        body{
-            background-color: rgb(230, 171, 208);
-            display:flex;
-            justify-content:center;
-            align-items: center;
-            height: 100vh;
-            margin:0;
+        body {
+            background-image: url('https://www.colive.com/blog/wp-content/uploads/2024/03/Place-to-Hangout-in-Coimbatore-3.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh; /* Use min-height to allow scrolling */
+            margin: 0;
             font-family: Arial, Helvetica, sans-serif;
+            padding: 40px 10px; /* Top/bottom padding for spacing on smaller screens */
+            box-sizing: border-box;
         }
-        h2{
-            text-align:center;
+
+        form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
     </style>
+
+    <script>
+        // Restrict DOB input to users 18+
+        window.onload = function () {
+            const dobInput = document.getElementById("dob");
+            const today = new Date();
+            const year = today.getFullYear() - 18;
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dobInput.max = `${year}-${month}-${day}`;
+        };
+
+        function validateAge(event) {
+            const dob = document.getElementById("dob").value;
+            const dobDate = new Date(dob);
+            const today = new Date();
+
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const m = today.getMonth() - dobDate.getMonth();
+            const d = today.getDate() - dobDate.getDate();
+
+            if (m < 0 || (m === 0 && d < 0)) {
+                age--;
+            }
+
+            if (age < 18) {
+                alert("You must be at least 18 years old to register.");
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
-   
-    <form action="/action_page.php">
+    <form action="/action_page.php" onsubmit="return validateAge(event)">
         <h2>Registration Page</h2>
-        <label>First Name:</label><br>
-        <input type="text" name="first_name" required><br><br>
 
-        <label>Last Name:</label><br>
-        <input type="text" name="last_name" required><br><br>
+        <label>First Name:</label>
+        <input type="text" name="first_name" required>
 
-        <label>Username:</label><br>
-        <input type="text" name="username" required><br><br>
+        <label>Last Name:</label>
+        <input type="text" name="last_name" required>
 
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
+        <label>Username:</label>
+        <input type="text" name="username" required>
 
-        <label>Confirm Password:</label><br>
-        <input type="password" name="confirm_password" required><br><br>
+        <label>Password:</label>
+        <input type="password" name="password" required>
 
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
+        <label>Confirm Password:</label>
+        <input type="password" name="confirm_password" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" required>
 
         <label>Gender:</label><br>
         <input type="radio" name="gender" value="Male" required> Male
-        <input type="radio" name="gender" value="Female"> Female<br><br>
+        <input type="radio" name="gender" value="Female"> Female
+        <br><br>
 
-        <label>Mobile Number:</label><br>
-        <input type="tel" name="mobile" pattern="[0-9]{10}" required><br><br>
-
-        <label>State:</label><br>
-        <input type="text" name="state" required><br><br>
-
-        <label>Country:</label><br>
-        <input type="text" name="country" required><br><br>
-
-        <select id = "select" name="select">
+         <label>Course:</label>
+        <select name="select" required>
             <option value="Course">Course</option>
             <option value="CSE">CSE</option>
             <option value="IT">IT</option>
             <option value="ECE">ECE</option>
             <option value="AIML">AIML</option>
             <option value="EEE">EEE</option>
-        </select><br><br>
+        </select>
+
+        <label>Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label>Mobile Number:</label>
+        <input type="tel" name="mobile" pattern="[0-9]{10}" required>
+
+        <label>State:</label>
+        <input type="text" name="state" required>
+
+        <label>Country:</label>
+        <input type="text" name="country" required>
+
 
         <input type="submit" value="Register">
     </form>
 </body>
 </html>
+
